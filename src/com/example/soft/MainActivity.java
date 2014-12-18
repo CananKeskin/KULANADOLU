@@ -1,8 +1,7 @@
 
-package com.example.soft;
+package com.example.kulanadoluu;
 
-import com.example.soft.MainActivity;
-import com.example.soft.R;
+import com.example.kulanadoluu.MainActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -42,8 +42,6 @@ public class MainActivity extends Activity
 	TextView date;
 	ImageButton imgDate; 
 	private DateFormat fmtDateAndTime = DateFormat.getDateInstance();
-   
-   
    
    	private Calendar myCalendar = Calendar.getInstance();
    	DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -82,6 +80,8 @@ public class MainActivity extends Activity
      	});
        	    
        		String[] items = new String[] {"Sinema", "Tiyatro", "Sergi"};
+       		
+       		
        		Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
        		            android.R.layout.simple_spinner_item, items);
@@ -94,9 +94,6 @@ public class MainActivity extends Activity
  
             }
             
-           
-            
- 
             private void displayListView()
             {
  
@@ -165,9 +162,9 @@ private class MyCustomAdapter extends ArrayAdapter<States>
  
    
     @Override
-   public View getView(int position, View convertView, ViewGroup parent) 
+   public View getView(final int position, View convertView, ViewGroup parent) 
     {
- 
+
             ViewHolder holder = null;
  
             Log.v("ConvertView", String.valueOf(position));
@@ -224,6 +221,41 @@ private class MyCustomAdapter extends ArrayAdapter<States>
             holder.name.setChecked(state.isSelected());
  
             holder.name.setTag(state);
+            
+            convertView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					 // Create custom dialog object
+	                final Dialog dialog = new Dialog(MainActivity.this);
+	                // Include dialog.xml file
+	                dialog.setContentView(R.layout.detay);
+	                // Set dialog title
+	                dialog.setTitle("Etkinlik Detayı");
+	               
+	 
+	                // set values for custom dialog components - text, image and button
+	                TextView title = (TextView) dialog.findViewById(R.id.title_txt);
+	                title.setText("title");
+	                TextView date = (TextView) dialog.findViewById(R.id.date_txt);
+	                date.setText("date");
+	                TextView location = (TextView) dialog.findViewById(R.id.location_txt);
+	                location.setText("location");
+	             
+	 
+	                dialog.show();
+	                 
+	                Button declineButton = (Button) dialog.findViewById(R.id.closeButton);
+	                // if decline button is clicked, close the custom dialog
+	                declineButton.setOnClickListener(new OnClickListener() {
+	                    @Override
+	                    public void onClick(View v) {
+	                        // Close dialog
+	                        dialog.dismiss();
+	                    }
+	                });
+				}
+			});
  
             return convertView;
     }
